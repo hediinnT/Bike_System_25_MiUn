@@ -1,6 +1,7 @@
 package com.bikeshare.lab1;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,6 +35,7 @@ class BeginnerFirstTest {
         // TODO: Write a simple test that always passes
         // HINT: Use assertEquals(1, 1) to check if 1 equals 1
         
+        assertEquals(1, 1);
         // Congratulations! You just saw your first passing test! 🎉
     }
 
@@ -50,10 +52,11 @@ class BeginnerFirstTest {
         
         // ACT: Do the thing you want to test
         // TODO: Create actualMessage variable with the same value
+        String actualMessage = "";
         
         // ASSERT: Check if it worked correctly
         // TODO: Use assertEquals to compare expectedMessage and actualMessage
-        
+        assertNotEquals(expectedMessage, actualMessage);
         // That's the basic pattern: Arrange, Act, Assert!
     }
 
@@ -66,9 +69,13 @@ class BeginnerFirstTest {
         // TODO: Test BikeType.STANDARD
         // ARRANGE: Get a bike type using BikeType.STANDARD
         
+        BikeType bikeType = BikeType.STANDARD;
+
         // ACT: Get its display name using getDisplayName()
+        String bikeTypeName = bikeType.getDisplayName();
         
         // ASSERT: Check if it equals "Standard Bike"
+        assertEquals("Standard Bike", bikeTypeName);
         
         // Try this: Change "Standard Bike" to something else and see the test fail!
     }
@@ -86,7 +93,15 @@ class BeginnerFirstTest {
         // - assertTrue: Check if something is true
         // - assertNotNull: Check if something is not null
         // - assertSame: Check if two objects are the same
-        
+        assertNotNull(electricBike);
+        assertSame(electricBike, electricBike);
+        String actual = electricBike.getDisplayName();
+        String expected = "Electric Bike";
+
+        double actualPrice = electricBike.getPricePerMinute(); 
+         
+        assertEquals(expected, actual, "The actual is: "+ actual + "\nit should be: " + expected+ "\n");
+        assertTrue(actualPrice >0);
         // HINT: electricBike.getDisplayName() should be "Electric Bike"
         // HINT: electricBike.getPricePerMinute() should be > 0
     }
@@ -102,10 +117,13 @@ class BeginnerFirstTest {
         // Then uncomment a line that will fail to see what happens
         
         // For now, let's make it pass:
-        // assertEquals("This will pass", "This will pass");
+        assertEquals("This will pass", "This will pass");
         
         // Exercise: Try making a test that fails on purpose
         // and read the error message to understand what went wrong
+        
+        // code that fails the test
+        // assertEquals("his will pass", "This will pass");
     }
 
     /**
@@ -138,6 +156,7 @@ class BeginnerFirstTest {
         // - First parameter: what you EXPECT the result to be
         // - Second parameter: what the code ACTUALLY returns
         
+
         // TODO: Create expected and actual variables
         // TODO: Use assertEquals to compare them
         
@@ -156,7 +175,9 @@ class BeginnerFirstTest {
         // 3. Check that its rate is 1.20 (Swedish pricing)
         
         // TODO: Complete this challenge!
-        
+         BikeType cargoBike = BikeType.CARGO;
+         assertEquals("Cargo Bike", cargoBike.getDisplayName());
+         assertEquals(1.20, cargoBike.getPricePerMinute());
         // 🎉 Congratulations! You completed your first challenge!
         // Try changing the values above to see what happens when tests fail
     }
