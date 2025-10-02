@@ -123,7 +123,7 @@ class BeginnerFirstTest {
         // and read the error message to understand what went wrong
         
         // code that fails the test
-        // assertEquals("his will pass", "This will pass");
+        assertEquals("his will pass", "This will pass");
     }
 
     /**
@@ -134,13 +134,29 @@ class BeginnerFirstTest {
     void practiceWithDifferentBikeTypes() {
         // TODO: Test different bike types:
         
+        BikeType standardBike = BikeType.STANDARD;
+        BikeType electricBike = BikeType.ELECTRIC;
         // Test standard bike
         // HINT: BikeType.STANDARD should have display name "Standard Bike" and price 0.50
-        
+        String actualStandardBike = standardBike.getDisplayName();
+        String actualEletricBike = electricBike.getDisplayName();
+
+        double actualStandardPrice = standardBike.getPricePerMinute(); 
+        double actualEletricPrice = electricBike.getPricePerMinute(); 
+ 
+        String expectedStandard = "Standard Bike";
+        String expectedElectric = "Electric Bike";
+
+
+        assertEquals(expectedStandard, actualStandardBike, "The actual is: "+ actualStandardBike + "\nit should be: " + expectedStandard+ "\n");
+        assertTrue(actualStandardPrice ==0.50);
         // Test electric bike  
         // HINT: BikeType.ELECTRIC should have display name "Electric Bike" and price 1.00
         
+        assertEquals(expectedElectric, actualEletricBike, "The actual is: "+ actualEletricBike + "\nit should be: " + expectedElectric+ "\n");
+        assertTrue(actualEletricPrice ==1.00);
         // TODO: Can you figure out the mountain and cargo bike values?
+        
         
     }
 
@@ -152,14 +168,18 @@ class BeginnerFirstTest {
     void understandExpectedVsActual() {
         BikeType mountainBike = BikeType.MOUNTAIN;
         
+        String actualMountain = mountainBike.getDisplayName();
         // In assertEquals(expected, actual):
         // - First parameter: what you EXPECT the result to be
         // - Second parameter: what the code ACTUALLY returns
         
+        String expectedMountain = "Mountain Bike";
+        double actualMountainPrice = mountainBike.getPricePerMinute();
 
-        // TODO: Create expected and actual variables
-        // TODO: Use assertEquals to compare them
+        double expectedMountainPrice = 0.7;
         
+        assertEquals(expectedMountain, actualMountain);
+        assertEquals(actualMountainPrice,expectedMountainPrice);
         // When this fails, JUnit shows: "Expected: X, Actual: Y"
     }
 
