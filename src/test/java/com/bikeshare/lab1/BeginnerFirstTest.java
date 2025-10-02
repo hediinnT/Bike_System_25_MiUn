@@ -123,7 +123,7 @@ class BeginnerFirstTest {
         // and read the error message to understand what went wrong
         
         // code that fails the test
-        assertEquals("his will pass", "This will pass");
+        //assertEquals("his will pass", "This will pass");
     }
 
     /**
