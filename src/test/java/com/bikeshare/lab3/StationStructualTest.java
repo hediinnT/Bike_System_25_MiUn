@@ -9,9 +9,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.nullable;
 
 
+@DisplayName("Lab 3: Station Structural Testing")
 public class StationStructualTest {
 
     String DefaultStationName = "we";
