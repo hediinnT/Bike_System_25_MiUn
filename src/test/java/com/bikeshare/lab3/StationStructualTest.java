@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.nullable;
 
 
 public class StationStructualTest {
@@ -48,9 +49,8 @@ public class StationStructualTest {
         assertEquals(Objects.hash(DefaultStationID),actualStation.hashCode());
 
     }
-    @ParameterizedTest
-    @ValueSource(ints = {-91,-90,-2,-1,0,1,2,90,91})
-    @DisplayName("latitude tests")
+    @ParameterizedTest(name = "lat test, latitude = {0}")
+    @ValueSource(ints = {-100,-91,-90,-2,-1,0,1,2,90,91,100})
     void latitudeTests(double latitude){
 
         if(latitude < -90 || latitude> 90){
@@ -66,12 +66,11 @@ public class StationStructualTest {
 
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {-181,-180,-2,-1,0,1,2,180,181})
-    @DisplayName("Longitute tests")
+    @ParameterizedTest(name = "lon test, longitute = {0}")
+    @ValueSource(doubles = {-200,-181,-180,-2,-1,0,1,2,180,181,182})
     void longitudeTests(double longitude){
 
-        if(longitude < -180 || longitude> 180){
+        if(longitude < -180 || longitude> 180 || Objects.isNull(longitude)){
             assertThrows(IllegalArgumentException.class,()->new Station(DefaultStationID,
                     DefaultStationName,DefaultStationAddress,
                     DLatitude,longitude, dCap));
@@ -142,34 +141,107 @@ public class StationStructualTest {
 
     }
     @Test
-    @DisplayName("Random is")
-    void isesTest() {
+    @DisplayName("Random is, and gets")
+    void isesAndGetsisTest() {
         Station actualStation = new Station(DefaultStationID,
                 DefaultStationName, DefaultStationAddress,
                 DLatitude, DefaultLongitude, dCap);
 
+        Station actualStation2 = new Station("newS",
+                "les", "d",
+                DLatitude, DefaultLongitude, dCap);
 
+        actualStation2.deactivate();
+
+        assertNull(actualStation2.getAvailableBike(null));
+        assertNull(actualStation.getAvailableBike(null));
+
+
+        assertEquals(100, actualStation.getAvailableDocks());
+        assertEquals(100, actualStation.getCapacity());
+        assertEquals(0, actualStation.getTotalBikeCount());
         assertFalse(actualStation.isFull());
         assertTrue(actualStation.isEmpty());
+        assertTrue(actualStation.equals(actualStation));
+        assertFalse(actualStation.equals(null));
+        assertFalse(actualStation.equals(2));
+        assertFalse(actualStation.equals(new BikeTypeBasicTest()));
+        assertFalse(actualStation.equals(actualStation2));
+        assertFalse(actualStation2.equals(actualStation));
 
     }
 
     @Test
-    @DisplayName("Simple Distance Tests")
+    @DisplayName("Throws by creation tests")
     void throwsTests() {
 
-
         assertThrows(IllegalArgumentException.class,()->new Station(null,
-                DefaultStationName, DefaultStationAddress,
-                DLatitude, DefaultLongitude, dCap));
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap));
+
+        assertThrows(IllegalArgumentException.class,()->new Station("  ",
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap));
+
+        assertDoesNotThrow(()->new Station(DefaultStationID,
+                    DefaultStationName, null,
+                    DLatitude, DefaultLongitude, dCap));
+
+        assertDoesNotThrow(()->new Station(DefaultStationID,
+                    DefaultStationName, "  ",
+                    DLatitude, DefaultLongitude, dCap));
+
+        assertDoesNotThrow(()->new Station(DefaultStationID,
+                    DefaultStationName, "  ",
+                    DLatitude, DefaultLongitude, dCap).getAvailableBikesByType(null));
+
+        assertDoesNotThrow(()->new Station(DefaultStationID,
+                    DefaultStationName, "  ",
+                    DLatitude, DefaultLongitude, dCap).getAllBikes());
+
+        assertDoesNotThrow(()->new Station(DefaultStationID,
+                    DefaultStationName, "  ",
+                    DLatitude, DefaultLongitude, dCap).getReservedBikeIds());
+
 
         assertThrows(IllegalArgumentException.class,()->new Station(DefaultStationID,
-                "", DefaultStationAddress,
-                DLatitude, DefaultLongitude, dCap));
+                    "", DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap));
 
         assertThrows(IllegalArgumentException.class,()->new Station(DefaultStationID,
-                null, DefaultStationAddress,
-                DLatitude, DefaultLongitude, dCap));
+                    null, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap));
+
+        assertThrows(IllegalArgumentException.class,()->new Station(DefaultStationID,
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, -1));
+
+        assertThrows(IllegalArgumentException.class,()->new Station(DefaultStationID,
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, 101));
+
+        assertThrows(IllegalStateException.class,()-> new Station(DefaultStationID,
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap).chargeElectricBikes(10));
+
+        assertThrows(IllegalArgumentException.class,()-> new Station(DefaultStationID,
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap).addBike(null));
+
+        assertThrows(IllegalArgumentException.class,()-> new Station(DefaultStationID,
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap).removeBike(null));
+
+        assertThrows(IllegalArgumentException.class,()-> new Station(DefaultStationID,
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap).reserveBike(null));
+
+        assertThrows(IllegalArgumentException.class,()-> new Station(DefaultStationID,
+                    DefaultStationName, DefaultStationAddress,
+                    DLatitude, DefaultLongitude, dCap).cancelReservation(null));
+
+
+
 
     }
 
