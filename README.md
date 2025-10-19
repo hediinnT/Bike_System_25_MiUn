@@ -60,6 +60,18 @@ Start with [Lab Overview](lab-instructions/00-GENERAL-INSTRUCTIONS.md) for compl
 - **IDE**: IntelliJ IDEA, Eclipse, or VS Code with Java extensions
 - **Git**: Version control
 
+### Testing & Quality Tools
+
+This project uses a comprehensive suite of professional testing tools:
+
+- **Test Frameworks**: JUnit 5, Mockito, AssertJ
+- **Coverage Analysis**: JaCoCo (line/branch coverage), PIT (mutation testing)
+- **Static Analysis**: SpotBugs, Checkstyle, PMD
+- **Behavioral Analysis**: CodeScene
+- **CI/CD**: GitHub Actions
+
+📚 **See [TOOLS.md](TOOLS.md) for complete documentation** of all tools, commands, and integration guides!
+
 ### Quick Setup
 
 ```bash

@@ -35,8 +35,10 @@
         <maven.surefire.version>3.1.2</maven.surefire.version>
         <maven.failsafe.version>3.1.2</maven.failsafe.version>
         <jacoco.version>0.8.10</jacoco.version>
-        <pitest.version>1.15.8</pitest.version>
-        <spotbugs.version>4.8.3</spotbugs.version>
+        <pit.version>1.15.8</pit.version>
+        <spotbugs.version>4.9.6.0</spotbugs.version>
+        <checkstyle.version>3.3.1</checkstyle.version>
+        <pmd.version>3.21.2</pmd.version>
         <exec.version>3.1.0</exec.version>
     </properties>
 
@@ -236,7 +238,7 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>${pitest.version}</version>
+                <version>${pit.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.pitest</groupId>
@@ -297,6 +299,41 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs.version}</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
+
+            <!-- Checkstyle Plugin for Code Style -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.version}</version>
+                <configuration>
+                    <configLocation>google_checks.xml</configLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>false</failsOnError>
+                    <violationSeverity>warning</violationSeverity>
+                </configuration>
+            </plugin>
+
+            <!-- PMD Plugin for Code Quality -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${pmd.version}</version>
+                <configuration>
+                    <rulesets>
+                        <ruleset>/rulesets/java/quickstart.xml</ruleset>
+                    </rulesets>
+                    <failOnViolation>false</failOnViolation>
+                    <printFailingErrors>true</printFailingErrors>
+                    <!-- PMD 6.55.0 doesn't support Java 21, use 17 as target -->
+                    <targetJdk>17</targetJdk>
+                </configuration>
             </plugin>
 
             <!-- Exec Plugin for Running Main Classes -->
@@ -407,6 +444,72 @@
             </build>
         </profile>
 
+        <!-- Lab 5: Advanced Tools & Static Analysis Profile -->
+        <profile>
+            <id>lab5</id>
+            <build>
+                <plugins>
+                    <!-- Run Lab 5 tests -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/lab5/**/*Test.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                    
+                    <!-- SpotBugs Static Analysis -->
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>${spotbugs.version}</version>
+                        <executions>
+                            <execution>
+                                <id>analyze</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- Checkstyle Code Style -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>${checkstyle.version}</version>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- PMD Code Quality -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <version>${pmd.version}</version>
+                        <executions>
+                            <execution>
+                                <id>analyze</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
 
         <!-- Lab 5: Mutation Testing Profile -->
