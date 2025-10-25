@@ -219,7 +219,7 @@ Tools that analyze code **without running it** to find:
 2. **View HTML Report**:
    ```bash
    # Open in browser:
-   target/site/pmd.html
+   target/reports/pmd.html
    ```
 
 3. **Analyze findings**:
