@@ -324,15 +324,27 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>${pmd.version}</version>
+                <version>3.25.0</version>
+                <dependencies>
+                    <!-- Upgrade PMD to version 7.x for Java 21 support -->
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-core</artifactId>
+                        <version>7.7.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-java</artifactId>
+                        <version>7.7.0</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <rulesets>
                         <ruleset>/rulesets/java/quickstart.xml</ruleset>
                     </rulesets>
                     <failOnViolation>false</failOnViolation>
                     <printFailingErrors>true</printFailingErrors>
-                    <!-- PMD 6.55.0 doesn't support Java 21, use 17 as target -->
-                    <targetJdk>17</targetJdk>
+                    <linkXRef>false</linkXRef>
                 </configuration>
             </plugin>
 
