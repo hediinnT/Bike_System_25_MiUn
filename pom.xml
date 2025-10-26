@@ -533,7 +533,7 @@
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
-                        <version>${pitest.version}</version>
+                        <version>${pit.version}</version>
                         <dependencies>
                             <dependency>
                                 <groupId>org.pitest</groupId>
@@ -626,7 +626,7 @@
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
-                        <version>${pitest.version}</version>
+                        <version>${pit.version}</version>
                         <dependencies>
                             <dependency>
                                 <groupId>org.pitest</groupId>
@@ -645,6 +645,7 @@
                             <targetTests>
                                 <param>com.bikeshare.lectures.*</param>
                                 <param>com.bikeshare.lab3.*</param>
+                                <param>com.bikeshare.lab4.*</param>
                             </targetTests>
                             
                             <mutators>
@@ -675,7 +676,7 @@
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
-                        <version>${pitest.version}</version>
+                        <version>${pit.version}</version>
                         <dependencies>
                             <dependency>
                                 <groupId>org.pitest</groupId>
