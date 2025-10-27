@@ -36,6 +36,7 @@
         <maven.failsafe.version>3.1.2</maven.failsafe.version>
         <jacoco.version>0.8.10</jacoco.version>
         <pit.version>1.15.8</pit.version>
+        <pitest.version>1.15.8</pitest.version>
         <spotbugs.version>4.9.6.0</spotbugs.version>
         <checkstyle.version>3.3.1</checkstyle.version>
         <pmd.version>3.21.2</pmd.version>
@@ -419,24 +420,7 @@
             </build>
         </profile>
 
-        <!-- All Tests Profile -->
-        <profile>
-            <id>all-tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/*Test.java</include>
-                                <include>**/*Tests.java</include>
-                            </includes>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+
 
         <!-- Lab 4: Mutation Testing Profile -->
         <profile>
@@ -533,7 +517,7 @@
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
-                        <version>${pit.version}</version>
+                        <version>${pitest.version}</version>
                         <dependencies>
                             <dependency>
                                 <groupId>org.pitest</groupId>
@@ -626,7 +610,7 @@
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
-                        <version>${pit.version}</version>
+                        <version>${pitest.version}</version>
                         <dependencies>
                             <dependency>
                                 <groupId>org.pitest</groupId>
@@ -644,7 +628,6 @@
                             
                             <targetTests>
                                 <param>com.bikeshare.lectures.*</param>
-                                <param>com.bikeshare.lab3.*</param>
                                 <param>com.bikeshare.lab4.*</param>
                             </targetTests>
                             
@@ -718,5 +701,25 @@
                 </plugins>
             </build>
         </profile>
+
+        <!-- All Tests Profile -->
+        <profile>
+            <id>all-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*Test.java</include>
+                                <include>**/*Tests.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 </project>

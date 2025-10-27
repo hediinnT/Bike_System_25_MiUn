@@ -1,8 +1,5 @@
 package com.bikeshare.lab4;
 
-import com.bikeshare.repository.BikeRepository;
-import com.bikeshare.repository.UserRepository;
-import com.bikeshare.service.UserService;
 import com.bikeshare.service.validation.AgeValidator;
 import com.bikeshare.service.validation.IDNumberValidator;
 import com.bikeshare.service.auth.BankIDService;
@@ -12,11 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -60,15 +59,12 @@ public class MutationImprovementTest {
 	@Mock
 	private BankIDService mockBankIdService;
 
-    @Mock
-    private UserRepository mockUserRepo;
 
 	// TODO: Inject mocks into the class under test
 	@InjectMocks
 	private AgeValidator ageValidator;
 
-    @InjectMocks
-    private UserService userService;
+
 
 
 	// TODO: You can also test User class mutations
@@ -89,9 +85,14 @@ public class MutationImprovementTest {
 		// Hint: Use a birthday that makes them 18 today
 		// Hint: Mock the dependencies to return true for validation and auth
 		// Hint: This test should kill the >= vs > mutation
+        LocalDate ld = LocalDate.now().minusYears(18);
+        String year = ""+ld.getYear();
+        String month = ""+ld.getMonth().getValue();
+        String day = ""+ld.getDayOfMonth();
 
-        String exactly18ID ="20071010"; // Figure out the right format
-		when(mockIdValidator.isValidIDNumber(exactly18ID)).thenReturn(true);
+        String exactly18ID = year+month+day; // Figure out the right format
+
+        when(mockIdValidator.isValidIDNumber(exactly18ID)).thenReturn(true);
 		when(mockBankIdService.authenticate(exactly18ID)).thenReturn(true);
 
 		boolean result = ageValidator.isAdult(exactly18ID);
@@ -149,9 +150,9 @@ public class MutationImprovementTest {
 
 	// TODO: Target the survived mutations on lines 43-44
 	// These are related to birthday adjustment logic
-	@Test
-	@DisplayName("Should kill birthday logic mutation: person before birthday")
-	void shouldKillBirthdayMutation_PersonBeforeBirthday() {
+	@ParameterizedTest(name = "Should kill birthday logic mutation for 18 years old + {0} days")
+    @ValueSource(ints ={-3,-1,0,1,3})
+	void shouldKillBirthdayMutation_PersonBeforeAndAfterBirthday(int days) {
 		// TODO: This is the tricky one - create a scenario where the birthday
 		// adjustment logic (age--) needs to be executed
 		// Hint: Create a person born in December, test before their birthday
@@ -159,26 +160,36 @@ public class MutationImprovementTest {
 
 		// Think about it: If someone is born Dec 31, 2005 and today is Dec 30, 2023,
 		// they are technically still 17 (haven't had their 18th birthday yet)
-        String year = "2007";
-        String month = "10";
-        String day = "26";
 
-        String preBirthdayId = year+month+day;
+        LocalDate ld = LocalDate.now().minusYears(18).plusDays(days);
+        String year = ""+ld.getYear();
+        String month = ""+ld.getMonth().getValue();
+        String day = ""+ld.getDayOfMonth();
 
-        when(mockIdValidator.isValidIDNumber(preBirthdayId)).thenReturn(true);
-        when(mockBankIdService.authenticate(preBirthdayId)).thenReturn(true);
 
-        boolean result = ageValidator.isAdult(preBirthdayId);
+        String birthdayId = year+month+day;
+        when(mockIdValidator.isValidIDNumber(birthdayId)).thenReturn(true);
+        when(mockBankIdService.authenticate(birthdayId)).thenReturn(true);
 
-        assertFalse(result, "Person exactly 18 should be adult");
-        verify(mockIdValidator).isValidIDNumber(preBirthdayId);
-        verify(mockBankIdService).authenticate(preBirthdayId);
+        boolean result = ageValidator.isAdult(birthdayId);
 
+        if(days <=0){
+            assertTrue(result, "Person less then 18 by : " + days + " days "  + birthdayId);
+        }else {
+            assertFalse(result, "Person more then 18 by : " + days + " days "  + birthdayId);
+
+        }
+        verify(mockIdValidator).isValidIDNumber(birthdayId);
+        verify(mockBankIdService).authenticate(birthdayId);
     }
+
 
 	// TODO: Write more tests for other mutation types
 	// Hint: Look at the mutation report to see what other mutations exist
 	// Examples: return value mutations, math operator mutations, etc.
+
+
+
 
 	// TODO: Test User class mutations (optional)
 	// Hint: Create tests for User.java methods that have survived mutations
@@ -189,21 +200,18 @@ public class MutationImprovementTest {
 		// Create User objects and test their methods
 		// Use mocks if User has dependencies in the future
 
+        String exactly18ID ="071020-0023";  // year 2007, month 10, day 20
 
 
-        String exactly18ID ="071020-0023"; // Figure out the right format
+        User user =new User(exactly18ID,"asd@asd.com","mem","dem");
+        user.addFunds(25);
 
 
-        User u =new User(exactly18ID,"asd@asd.com","mem","dem");
-        u.addFunds(25);
 
-        when(mockUserRepo.findById(exactly18ID)).thenReturn(Optional.of(u));
+        assertEquals(25.0,user.getAccountBalance());
 
+        assertThrows(IllegalArgumentException.class,()->user.addFunds(0));
 
-        User foundUser = userService.getUserById(exactly18ID);
-
-        System.out.println(u.toString());
-        assertEquals(25.0,foundUser.getAccountBalance());
 
 	}
 
