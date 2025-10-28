@@ -637,13 +637,13 @@
                                 <mutator>MATH</mutator>
                                 <mutator>NEGATE_CONDITIONALS</mutator>
                             </mutators>
-                            
+
                             <outputFormats>
                                 <outputFormat>HTML</outputFormat>
                             </outputFormats>
-                            
+
                             <verbose>true</verbose>
-                            <threads>1</threads>
+                            <threads>2</threads>
                             <timeoutConstant>3000</timeoutConstant>
                         </configuration>
                     </plugin>

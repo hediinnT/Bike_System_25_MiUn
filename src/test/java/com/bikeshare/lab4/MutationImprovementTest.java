@@ -116,8 +116,8 @@ public class MutationImprovementTest {
 		 when(mockIdValidator.isValidIDNumber(invalidId)).thenReturn(false);
 
 		 IllegalArgumentException exception = assertThrows(
-		 IllegalArgumentException.class,
-		 () -> ageValidator.isAdult(invalidId)
+             IllegalArgumentException.class,
+             () -> ageValidator.isAdult(invalidId)
 		 );
 
 		 assertEquals("Invalid ID number", exception.getMessage());
@@ -208,9 +208,11 @@ public class MutationImprovementTest {
 
 
 
-        assertEquals(25.0,user.getAccountBalance());
+        assertAll(
+            ()-> assertEquals(25.0,user.getAccountBalance()),
+           ()-> assertThrows(IllegalArgumentException.class,()->user.addFunds(0))
+        );
 
-        assertThrows(IllegalArgumentException.class,()->user.addFunds(0));
 
 
 	}
