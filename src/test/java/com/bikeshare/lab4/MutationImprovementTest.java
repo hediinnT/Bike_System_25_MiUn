@@ -52,6 +52,21 @@ import static org.mockito.Mockito.*;
 @DisplayName("Lab 4: Mutation Testing Improvement")
 public class MutationImprovementTest {
 
+
+	private static String generateIdString(int dayOfset, int monthOfset, int yearOfset){
+		LocalDate ld = LocalDate.now().plusYears(yearOfset).plusMonths(monthOfset).plusDays(dayOfset);
+		String year = ""+ld.getYear();
+		String month = ""+ld.getMonth().getValue();
+		String day = ""+ld.getDayOfMonth();
+		if(day.length()==1){
+			day="0"+day;
+		}
+		if(month.length()==1){
+			month="0"+month;
+		}
+		return year+month+day;
+	}
+
 	// TODO: Set up mocks for dependencies
 	@Mock
 	private IDNumberValidator mockIdValidator;
@@ -85,13 +100,10 @@ public class MutationImprovementTest {
 		// Hint: Use a birthday that makes them 18 today
 		// Hint: Mock the dependencies to return true for validation and auth
 		// Hint: This test should kill the >= vs > mutation
-        LocalDate ld = LocalDate.now().minusYears(18);
-        String year = ""+ld.getYear();
-        String month = ""+ld.getMonth().getValue();
-        String day = ""+ld.getDayOfMonth();
+        String exactly18ID = generateIdString(0, 0, -18);	
+		System.out.println("-----------");
 
-        String exactly18ID = year+month+day; // Figure out the right format
-
+		System.out.println(exactly18ID);
         when(mockIdValidator.isValidIDNumber(exactly18ID)).thenReturn(true);
 		when(mockBankIdService.authenticate(exactly18ID)).thenReturn(true);
 
@@ -161,13 +173,10 @@ public class MutationImprovementTest {
 		// Think about it: If someone is born Dec 31, 2005 and today is Dec 30, 2023,
 		// they are technically still 17 (haven't had their 18th birthday yet)
 
-        LocalDate ld = LocalDate.now().minusYears(18).plusDays(days);
-        String year = ""+ld.getYear();
-        String month = ""+ld.getMonth().getValue();
-        String day = ""+ld.getDayOfMonth();
+        String birthdayId = generateIdString(days, 0, -18);
 
+		
 
-        String birthdayId = year+month+day;
         when(mockIdValidator.isValidIDNumber(birthdayId)).thenReturn(true);
         when(mockBankIdService.authenticate(birthdayId)).thenReturn(true);
 
