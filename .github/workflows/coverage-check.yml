@@ -45,7 +45,7 @@ jobs:
           echo "❌ No coverage data generated"
           echo "line_coverage=0" >> $GITHUB_OUTPUT
           echo "branch_coverage=0" >> $GITHUB_OUTPUT
-          echo "$(ls -al target/site)"
+          echo "$(ls -al target)"
         fi
         
     - name: Coverage Summary
