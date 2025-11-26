@@ -192,4 +192,8 @@ public class BikeServiceTest {
         assertDoesNotThrow(() -> bikeService.markForMaintenance(BIKE_ID, "Test reason"));
         verify(bikeRepository).save(any(Bike.class));
     }
+	@Test
+	void failTestToSeeWhatHappens(){
+		assert(false);
+	}
 }
