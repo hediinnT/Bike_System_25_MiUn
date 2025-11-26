@@ -24,7 +24,7 @@ jobs:
       run: |
         # Run tests and continue even if some fail (student repository)
         mvn clean test
-        mvn jacoco:report
+        mvn jacoco:report -Dmaven.test.failure.ignore=true
         
     - name: Extract coverage info
       id: coverage
